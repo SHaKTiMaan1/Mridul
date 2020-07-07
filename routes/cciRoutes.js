@@ -2,10 +2,12 @@
 
 
 var express = require("express"),
-  router = express.Router(),
-  Cci = require("../models/cci2.js"),
-   Child = require("../models/child.js"),
-   attendance = require("../models/attendance.js");
+    router = express.Router(),
+    Cci = require("../models/cci2.js"),
+    Child = require("../models/child.js"),
+    attendance = require("../models/attendance.js");
+
+    
 // CCI Registration
 router.get('/addCci', function (req, res) {
   res.render("addCci.ejs");
@@ -109,26 +111,65 @@ router.post('/addCci', function (req, res) {
 
 
 router.get('/ccisuccess/:id/:name', function (req, res) {
-  res.render("cciregsuccess.ejs", {
-    id: req.params.id, name: req.params.name
-  });
+  res.render("cciregsuccess.ejs", { id: req.params.id, name: req.params.name}
+  );
 });
 
-router.get('/attendance/:cciId', function(req, res){
+
+
+// I did this to create first document in attendance collection. 
+// router.post('/createTest', function(req, res){
+//   attendance.create(
+//     {
+//       C_Id: "Sample",
+
+//       name:"Sample",
+      
+//       cci_id: "Sample",
+      
+//       Present:"true"
+//     },
+    
+//     function(err, created){
+//     if(err)
+//     {
+//       console.log(err);
+//     }
+//     else
+//     {
+//       console.log(created);
+//     }
+//   });
+// });
+
+router.get('/attendance/:cciId/:cciname', function(req, res){
   let cciid = req.params.cciId;
-  console.log(cciid);
-  attendance.find({ cci_id: cciid}, function(err, child){
+  // console.log(cciid);
+  attendance.find({cci_id: req.params.cciId  }, function(err, allchild){
     if(err){
       console.log(err);
     }
     else
     {
-      console.log(child);
-      res.render('attendance.ejs', {child:child});
+      console.log(allchild);
+      res.render('attendance.ejs', {child: allchild , cci_name:req.params.cciname});
     }
-  })
+  });
 
-})
+});
 
+
+router.get('/getdetails', function(req, res){
+  attendance.find({}, function(err, data){
+    if(err)
+    {
+      console.log(err);
+    }
+    else
+    {
+      res.send(data);
+    }
+  });
+});
 
 module.exports = router;
