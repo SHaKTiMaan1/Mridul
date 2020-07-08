@@ -19,3 +19,4 @@ In CCI INFO Ejs page
 
 All the pages have comment for each post and get request and Routes...
 
+table.export.min.js and cciInfo.js and libs folder in views is of no use.
