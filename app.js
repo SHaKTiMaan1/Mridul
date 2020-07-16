@@ -42,13 +42,17 @@ var Cci = require("./models/cci2");
 //REQUIRING ROUTES
 var basicRoutes = require("./routes/index"),
   cwcRoutes = require("./routes/cwcRoutes"),
-  cciRoutes = require("./routes/cciRoutes")
+  cciRoutes = require("./routes/cciRoutes");
+  loginRoutes = require("./routes/loginRoutes");
+
+
 
 
 //USING ROUTES
 app.use(basicRoutes);
 app.use(cwcRoutes);
 app.use(cciRoutes);
+app.use(loginRoutes);
 
 
 
@@ -57,9 +61,21 @@ app.use(cciRoutes);
 
 
 
+app.get('/loginAdmin', function(req, res){
+  res.render('login/loginAdmin.ejs');
+});
 
 
+app.get('/cwcEmployeeReg', function(req, res){
+  res.render('form/cwcEmployeeReg.ejs');
+});
 
+
+app.post('/updatingField', function(req, res){
+  Child.updateMany({cci_name: "St.Judes"},  { $set: { number: 1}},{new:true}).then((result, err) => {
+    return res.status(200).json({ data: result, message:"Value Updated" });
+})
+});
 
 
 
