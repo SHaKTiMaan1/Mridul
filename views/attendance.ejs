@@ -15,40 +15,43 @@
 
 <body>
 
-  
-  
-  
- 
+
   <br>
   <div class="contain px-4">
 
     <div class="jumbotron">
 
+      <div class="container">
+        <input class="form-control" id="date" name="reg_date" type="date">
+        <button class="btn btn-primary btn-block" id="dateBtn"
+              type="e">Show</button>
+      </div>
+
       <div class="mx-auto my-4" style="width: 200px;">
         <button type="button" class="btn btn-success btn-lg "><%=cci_name%></button>
       </div>
       <br>
-      <table class="table">
+      <table class="table" id="table">
         <thead class="thead-dark">
           <tr>
             <th scope="col">Child ID</th>
             <th scope="col">Child Name</th>
             <th scope="col"></th>
-  
+
           </tr>
         </thead>
-        <tbody>
+        <tbody id="tableRow">
           <% child.forEach(function(child){ %>
           <% console.log(child.name) %>
-          <tr>
+          <tr >
             <th scope="row"><%=child.C_Id%></th>
             <td><%=child.name%></td>
             <%let value = ""%>
             <% if(child.Present == true) {value ="PRESENT"} %>
             <% if(child.Present != true){ value = "ABSENT"}  %>
-  
+
             <td><%=value%></td>
-  
+
           </tr>
           <% }); %>
         </tbody>
@@ -57,7 +60,93 @@
 
   </div>
 
- 
+
+  <script >
+    
+    console.log("working");
+    test = document.getElementById("date").value;
+    // console.log(test);
+    var yyyy = "";
+    var mm = "";
+    var dd = "";
+    document.getElementById("date").addEventListener('change', function(){
+      changeDate = this.value;
+
+      
+      yyyy = changeDate.substring(0,4);
+      mm = changeDate.substring(5,7);
+      dd = changeDate.substring(8,10);
+      console.log(yyyy);
+      console.log(mm);
+      console.log(dd);
+      changeDate = dd+'-'+mm+'-' + yyyy;
+      console.log(changeDate);
+    })
+
+    let dateBtn = document.getElementById('dateBtn');
+    dateBtn.addEventListener('click', buttonHandler);
+
+     function buttonHandler(){
+      console.log("You have clicked");
+
+      const xhr = new XMLHttpRequest();
+
+
+  // xhr.open('GET', 'mridul.txt', true);
+  // xhr.open('GET', 'https://jsonplaceholder.typicode.com/todos/1', true);
+  xhr.open('GET', `http://localhost:3000/getDetails/<%=cci_id%>/find/${changeDate}`, true);
+  
+
+  xhr.onload = function(){
+    if(this.status === 200){
+      console.log()
+    let obj = JSON.parse(this.responseText);
+
+    console.log(obj[0]);
+
+    
+
+
+    let tableRow = document.getElementById('tableRow');
+    str = "";
+    
+    // for( i=0; i<20; i++)
+    // {
+    //   str+=`<li>  ${obj.data[i].id}
+    //   ${obj.data[i].employee_name}
+    //     </li>`;
+      
+    // }
+    // list.innerHTML = str;
+    for(var i = 0; i <obj.length; i++) {
+      var bacha = obj[i];
+      console.log(obj[i].name);
+      str+= `
+      <tr>
+      <th scope="row">${bacha.C_Id}</th>
+            <td>${bacha.name}</td>
+           
+            <td>PRESENT</td>
+      </tr>
+            `
+    }
+
+    tableRow.innerHTML = str;
+
+   
+    }
+    else{
+      console.log("Some error occcured.");
+    }
+  }
+  
+  xhr.send();
+
+    }
+
+
+
+  </script>
 
 
 
@@ -72,6 +161,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
     integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
     crossorigin="anonymous"></script>
+    
 </body>
 
 </html>
