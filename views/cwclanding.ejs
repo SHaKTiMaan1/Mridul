@@ -73,13 +73,23 @@ a:active {
 </head>
 <body>
 
+  <div id = "Information">
+    <!-- Email_ID : <%= cwcOfficial.email %> <br> -->
+   <h2>Welcome <%= cwcOfficial.fname %></h2> 
+   <h2>District: <%= cwcOfficial.district%></h2>
+  </div>
+  
+
 
 
 <div class="grid-container">
- <div><button class="btn info"><a href="/addChild" target="_blank">Child Registration</a></button></div> 
+ <div><button class="btn info">
+   <a href="/addChild/<%= cwcOfficial.district%>" target="_blank">Child Registration</a>
+  </button>
+</div> 
   <div><button class="btn info"><a href="/addCci" target="_blank">CCI Registration</a></button></div>
   <div><button class="btn info"><a href="/details" target="_blank">Eligibility Pool</a>  </button></div>
-  <div><button class="btn info"><a href="/cciInfo" target="_blank">CCIs Details</a>  </button></div>
+  <div><button class="btn info"><a href="/cciInfo/<%= cwcOfficial.district%>" target="_blank">CCIs Details</a>  </button></div>
 </div>
 
 

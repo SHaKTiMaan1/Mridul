@@ -3,11 +3,13 @@ var mongoose = require("mongoose");
 var attendanceSchema = new mongoose.Schema({
   C_Id: String,
 
-name:String,
+  name: String,
 
-cci_id:String,
+  cci_id: String,
 
-Present: Boolean
+  date: String,
+
+  Present: Boolean
 
 });
 

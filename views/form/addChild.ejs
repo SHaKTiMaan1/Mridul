@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+  <title>New Child Registration</title>
+</head>
+
+<body>
+
+  <div class="container text-center">
+    <h1 class="my-4">NEW CHILD REGISTRATION FORM</h1>
+  </div>
+  <div class="container">
+    <div class="jumbotron my-4">
+      <form method="post" action="/addChild">
+        <label for="Name">Name Of Child</label>
+        <div class="row">
+          <div class="col">
+            <input type="text" class="form-control" 
+            name="fname" placeholder="First name">
+          </div>
+          <div class="col">
+            <input type="text" class="form-control"
+            name="lname"
+            placeholder="Last name">
+          </div>
+        </div>
+
+        <br>
+
+        <label for="Name">Age</label>
+        <div class="row">
+          <div class="col">
+            <input type="text" class="form-control"
+            name="age"
+            placeholder="Age in years">
+          </div>
+        </div>
+
+        <br>
+
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Name Of CCI</label>
+          <select class="form-control" id="cciSelect" name="cci_name" placeholder="Select CCI">
+           <% cci.forEach(function(cci){ %>
+           <% let distname =  (cci.cci_address.district); %>
+           <% distname = distname.toLowerCase(); %>
+           <% district = district.toLowerCase(); %>
+           <% let value =district.localeCompare(distname);%>
+           <%  if(value==0){ %>
+                <option>
+                 <%= cci.cci_name;%>
+                </option>
+          <%    }  %>
+          <%  });  %>
+           
+          </select>
+        </div>
+
+        <br>
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col">
+              <label for="exampleFormControlSelect1" class="ml-3rem"><strong>Date when Found</strong></label>
+            </div>
+            <div class="col">
+              <label for="exampleFormControlSelect1" class="ml-3rem"><strong>Gender</strong></label>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-sm-6">
+              <input class="form-control" id="dob" name="reg_date" type="date">
+            </div>
+            &nbsp
+
+            <div class="col-sm-2">
+              <label class="radio-inline"><input id="femaleRadio" name="gender" type="radio" value="F"> Female</label>
+            </div>
+            <div class="col-sm-2">
+              <label class="radio-inline"><input id="maleRadio" name="gender" type="radio" value="M"> Male </label>
+            </div>
+          </div>
+
+
+
+
+        </div>
+
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Witness </label>
+          <input type="text" class="form-control" id="exampleFormControlInput1"
+          name="witness"
+          placeholder="ID (CWC Official)">
+        </div>
+
+        <div class="form-group">
+          <div class="col-sm-9 col-sm-offset-3"><button class="btn btn-primary btn-block" id="register"
+              type="e">Register</button></div>
+        </div>
+
+
+      </form>
+
+
+
+    </div>
+
+
+
+
+
+  </div>
+
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

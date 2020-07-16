@@ -4,6 +4,7 @@ var CciSchema = new mongoose.Schema({
     count: Number,
     cci_name: String,
     cci_id: String,
+    strength: Number,
     cci_HeadName:{
     fname    : String,
     lname    : String,
