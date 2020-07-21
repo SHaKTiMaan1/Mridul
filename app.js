@@ -57,7 +57,9 @@ app.use(loginRoutes);
 
 
 
-
+app.get('/newAttendance', function(req, res){
+  res.render('newattendance.ejs');
+});
 
 
 
@@ -70,7 +72,7 @@ app.get('/cwcEmployeeReg', function(req, res){
   res.render('form/cwcEmployeeReg.ejs');
 });
 
-
+///for testing only
 app.post('/updatingField', function(req, res){
   Child.updateMany({cci_name: "St.Judes"},  { $set: { number: 1}},{new:true}).then((result, err) => {
     return res.status(200).json({ data: result, message:"Value Updated" });
