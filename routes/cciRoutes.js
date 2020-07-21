@@ -10,12 +10,12 @@ var express = require("express"),
 
 
 // CCI Registration
-router.get('/addCci', function (req, res) {
+router.get('/addCci/:district/:cwcOfficialName', function (req, res) {
   res.render("form/addCci.ejs");
 });
 
 // CCi details Page GET Request
-router.get('/cciInfo/:district', function (req, res) {
+router.get('/cciInfo/:district/:cwcOfficialName', function (req, res) {
 
   Cci.find({ "cci_address.district": req.params.district }, function (err, allCci) {
     if (err) {
@@ -27,7 +27,7 @@ router.get('/cciInfo/:district', function (req, res) {
           console.log(error);
         }
         else {
-          res.render('cciInfo.ejs', { cci: allCci, child: child });
+          res.render('cciDetails.ejs', { cci: allCci, child: child, district: req.params.district, cwcOfficialName: req.params.cwcOfficialName });
         }
       });
     }
@@ -120,44 +120,41 @@ router.get('/ccisuccess/:id/:name/:head_Id', function (req, res) {
 });
 
 
-var children = [
+var children =[
+  {
+    date: "18/07/2020",
+    data : [ {
+      C_Id: "Sample1",
   
+      firstName: "Unique",
+  
+      present: true
+    }]
+  } ,
   {
-    C_Id: "GhaM1RamM2",
+    date: "18/07/2020",
+    data : [ {
+      C_Id: "Sample2",
+  
+      firstName: "Unique",
+  
+      present: true
+    }]
+  } 
+ 
+];
 
-    name: "Unique",
-
-    cci_id: "GhaM1",
-
-    date: "16/06/2020",
-
-    Present: true
-  },
-
-  {
-    C_Id: "GhaM1RamM2",
-
-    name: "",
-
-    cci_id: "GhaM1",
-
-    date: "02/07/2019",
-
-    Present: true
-  },
-]
 
 // This is to create 
 router.post('/createTest', function (req, res) {
-  attendance.create(children, function (err, created) {
-    if (err) {
+  Cci.findOneAndUpdate({cci_id:"GhaM2"}, {$push : {attendance: children}}, function(err, done){
+    if(err){
       console.log(err);
     }
-    else {
-      console.log(created);
+    else{
+      console.log(done);
     }
   });
-
 });
 
 
@@ -167,48 +164,122 @@ router.post('/createTest', function (req, res) {
 router.get('/getDetails/:cciId/find/:changeDate', function (req, res) {
   let cciid = req.params.cciId;
 
-
-  var defaultDate = req.params.changeDate;
-
+  var chosenDate = req.params.changeDate;
   
+  console.log(chosenDate); 
 
-  
-  console.log(defaultDate); 
-
-  // console.log(cciid);
-  attendance.find({ cci_id: req.params.cciId, date: defaultDate }, function (err, allchild) {
-    if (err) {
+  Cci.find({cci_id: req.params.cciId,  "attendance.date": chosenDate },{attendance:{$elemMatch: {date: chosenDate}}},function(err, foundCci){
+    if(err){
       console.log(err);
     }
-    else {
-      // console.log(allchild);
-      res.send(allchild);
-      console.log(allchild)
+    else{
+      if(foundCci.length>0){
+      var obj = JSON.parse(JSON.stringify(foundCci));
+      // console.log(obj.attendance[0]);
+      // res.send(obj);
+      // console.log(typeof(obj));
       
-    //   let obj = JSON.parse(JSON.stringify(allchild));
-    //   for(var i = 0; i < obj.length; i++) {
-    //     var keyss = obj[i];
-    
-    //     console.log(keyss.name);
-    // }
+      var keyss =obj[0];
+      res.send(keyss.attendance[0].data);  // THIS WILL RETURN AN ARRAY--> THE DATA(MEANS ATTENDANCE OF ALL CHILDREN ) OF A SPECIFIC DATE.
+      console.log(keyss.attendance[0].data);  // THIS WILL RETURN AN ARRAY--> THE DATA(MEANS ATTENDANCE OF ALL CHILDREN ) OF A SPECIFIC DATE.
+      }
+      else{
+        console.log("attendance nahii hai");
+        res.sendStatus(201);
+      }
       
-      
-      // Here we are passing the child and cci information for ejs page 
     }
   });
+
+  //THIS WAS PREVIOUS METHOD FOR ATTENDANCE COLLECTION (KEEP IT !!)
+  // attendance.find({ cci_id: req.params.cciId, date: chosenDate }, function (err, allchild) {
+  //   if (err) {
+  //     console.log(err);
+  //   }
+  //   else {
+  //     // console.log(allchild);
+  //     res.send(allchild);
+  //     console.log(allchild)
+      
+  //   //   let obj = JSON.parse(JSON.stringify(allchild));
+  //   //   for(var i = 0; i < obj.length; i++) {
+  //   //     var keyss = obj[i];
+    
+  //   //     console.log(keyss.name);
+  //   // }
+      
+      
+  //     // Here we are passing the child and cci information for ejs page 
+  //   }
+  // });
 
 });
 
 
-// this is the request when we click the button of attendance details on CCI INFO page.
-router.get('/attendance/:cciId/:cciname', function (req, res) {
+// ROUTE FOR CONNECTING ATTENDANCE PAGE MADE BY TANISHA 
+router.get('/newAttendance/:cciId/:cciname', function (req, res) {
   let cciid = req.params.cciId;
   var today = new Date();
+  console.log(today);
   var dd= today.getDate();
   if(dd<10){
     dd = '0' + dd;
   }
   var mm = today.getMonth();
+  mm++;
+  if(mm<10){
+    mm = '0' + mm;
+  }
+  
+  var yyyy = today.getFullYear();
+  var defaultDate = dd + '-' + mm + '-' + yyyy;
+  console.log(defaultDate)
+
+  Cci.find(
+    {cci_id: req.params.cciId,  "attendance.date": defaultDate },
+    {attendance:{$elemMatch: {date: defaultDate}}},function(err, foundCci){
+    if(err){
+      console.log(err);
+    }
+    else{
+      // console.log(foundCci);
+      var obj =JSON.parse(JSON.stringify(foundCci));
+      // console.log(obj.attendance[0]);
+      // res.send(obj);
+      // console.log(typeof(obj));
+      if(obj.length>0){
+      var keyss =obj[0];
+      console.log(keyss.attendance[0].data);  // THIS WILL RETURN AN ARRAY--> THE DATA(MEANS ATTENDANCE OF ALL CHILDREN ) OF A SPECIFIC DATE.
+
+      res.render('attendanceList.ejs', { child:keyss.attendance[0].data , cci_name: req.params.cciname , cci_id: req.params.cciId , cci_id: req.params.cciId, district: req.params.district, cwcOfficialName: req.params.cwcOfficialName});
+
+      }
+      else{
+        console.log("Iss date ki attendance Nahii hai");
+        res.render('noattendanceList.ejs', {  cci_name: req.params.cciname , cci_id: req.params.cciId, cci_id: req.params.cciId, district: req.params.district, cwcOfficialName: req.params.cwcOfficialName });
+      }
+    }
+  });
+
+
+});
+
+
+
+
+
+// THIS IS OLD ROUTE FOR ATTENDANCE PAGE.
+// this is the request when we click the button of attendance details on CCI INFO page.
+router.get('/attendance/:cciId/:cciname', function (req, res) {
+  let cciid = req.params.cciId;
+  var today = new Date();
+  console.log(today);
+  var dd= today.getDate();
+  if(dd<10){
+    dd = '0' + dd;
+  }
+  var mm = today.getMonth();
+  mm++;
   if(mm<10){
     mm = '0' + mm;
   }
@@ -216,22 +287,53 @@ router.get('/attendance/:cciId/:cciname', function (req, res) {
   var yyyy = today.getFullYear();
   
 
-  var defaultDate = dd + '/' + mm + '/' + yyyy;
-  // console.log(defaultDate); 
+  var defaultDate = dd + '-' + mm + '-' + yyyy;
+  // console.log(defaultDate);
+//  console.log(typeof(defaultDate)); 
 
   // console.log(cciid);
-  attendance.find({ cci_id: req.params.cciId, date: defaultDate }, function (err, allchild) {
-    if (err) {
+  Cci.find(
+    {cci_id: req.params.cciId,  "attendance.date": defaultDate },
+    {attendance:{$elemMatch: {date: defaultDate}}},function(err, foundCci){
+    if(err){
       console.log(err);
     }
-    else {
-      // console.log(allchild);
-      res.render('attendance.ejs', { child: allchild, cci_name: req.params.cciname , cci_id: req.params.cciId });
-      // Here we are passing the child and cci information for ejs page 
+    else{
+      // console.log(foundCci);
+      var obj =JSON.parse(JSON.stringify(foundCci));
+      // console.log(obj.attendance[0]);
+      // res.send(obj);
+      // console.log(typeof(obj));
+      if(obj.length>0){
+      var keyss =obj[0];
+      console.log(keyss.attendance[0].data);  // THIS WILL RETURN AN ARRAY--> THE DATA(MEANS ATTENDANCE OF ALL CHILDREN ) OF A SPECIFIC DATE.
+
+      res.render('attendance.ejs', { child:keyss.attendance[0].data , cci_name: req.params.cciname , cci_id: req.params.cciId , cci_id: req.params.cciId, district: req.params.district, cwcOfficialName: req.params.cwcOfficialName });
+
+      }
+      else{
+        console.log("Iss date ki attendance Nahii hai");
+        res.render('noattendanceList.ejs', {  cci_name: req.params.cciname , cci_id: req.params.cciId  });
+      }
     }
   });
 
-});
+  });
+
+
+
+//   attendance.find({ cci_id: req.params.cciId, date : defaultDate}, function (err, allchild) {
+//     if (err) {
+//       console.log(err);
+//     }
+//     else {
+//       //  console.log(allchild);
+//       res.render('attendance.ejs', { child: allchild, cci_name: req.params.cciname , cci_id: req.params.cciId });
+//       // Here we are passing the child and cci information for ejs page 
+//     }
+//   });
+
+// });
 
 // router.get('/getDetails/:cciId/:date', function (req, res) {
 //   let cciid = req.params.cciId;
@@ -266,12 +368,9 @@ router.get('/attendance/:cciId/:cciname', function (req, res) {
     
 //     //     console.log(keyss.name);
 //     // }
-      
-      
 //       // Here we are passing the child and cci information for ejs page 
 //     }
 //   });
-
 // });
 
 
@@ -287,5 +386,6 @@ router.get('/getdetails', function (req, res) {
     }
   });
 });
+
 
 module.exports = router;

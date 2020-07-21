@@ -6,47 +6,24 @@ var express = require("express"),
   Cci = require("../models/cci2.js");
 
 
-router.get("/cwc", function (req, res) {
-  res.render("cwclanding.ejs");
+router.get("/cwcBack", function (req, res) {
+  res.redirect(req.get('referer'));
 });
-
-
-router.get('/addChild/:district', function (req, res) {
-
-  Cci.find({}, function (err, allCci) {
-    if (err) {
-      console.log(err);
-    }
-    else {
-      res.render("form/addChild.ejs", { district: req.params.district, cci: allCci });
-    }
-  });
-
-});
-
-
-
-//Eligibility Pool of District
-router.get('/new', function (req, res) {
-  res.render("table.ejs");
-});
-
-
-//  this is (**)
-router.get('/registered/:id/:name', function (req, res) {
-  res.render("success.ejs", {
-    cciname: req.params.name,
-    C_Id: req.params.id
-  });
-});
-
-
 
 router.post('/addChild', function (req, res) {
 
   var C_Id = (req.body.fname + req.body.gender);
   var childId = "";
 
+  dateEntered = "";
+  dateSelected = req.body.reg_date;
+  // console.log(typeof(req.body.reg_date));
+  yyyy = dateSelected.substring(0,4);
+  mm = dateSelected.substring(5,7);
+  dd =dateSelected.substring(8,10);
+   
+  dateEntered = dd + '-' +mm + '-' +yyyy ;
+  console.log(dateEntered);
   //First get te strength of CCI.
   Cci.findOne({ cci_name: req.body.cci_name }, 'cci_id strength', function (err, CciFound) {
     if (err) {
@@ -74,7 +51,7 @@ router.post('/addChild', function (req, res) {
           age: req.body.age,
           cci_name: req.body.cci_name,
           cci_id: prefix,
-          reg_date: req.body.reg_date,
+          reg_date: dateEntered,// Date made to String
           gender: req.body.gender,
           witness: req.body.witness
         },
@@ -91,7 +68,7 @@ router.post('/addChild', function (req, res) {
 
         
     }
-
+  // This code increment the strength field by 1.
     Cci.findOneAndUpdate({cci_name: req.body.cci_name},{$inc:{strength: 1}},{new: true}, function(err, result){
       if(err){
         console.log(err);
@@ -108,7 +85,41 @@ router.post('/addChild', function (req, res) {
  
 });
 
+router.get('/addChild/:district/:cwcOfficialName', function (req, res) {
 
+  Cci.find({"cci_address.district": req.params.district}, function (err, allCci) {
+    if (err) {
+      console.log(err);
+    }
+    else {
+      res.render("childReg.ejs", { district: req.params.district, cci: allCci, cwcOfficialName: req.params.cwcOfficialName });
+    }
+  });
+
+});
+
+
+
+//Eligibility Pool of District
+router.get('/new', function (req, res) {
+  res.render("table.ejs");
+});
+
+
+//  this is (**)
+router.get('/registered/:id/:name', function (req, res) {
+  res.render("success.ejs", {
+    cciname: req.params.name,
+    C_Id: req.params.id
+  });
+});
+
+
+
+
+
+
+//Eligibility Pool route
 
 router.get('/details', function (req, res) {
   // var date=  new Date( parseInt((new Date().getTime - 172800000),10));
@@ -120,11 +131,11 @@ router.get('/details', function (req, res) {
     } else {
       //  res.set('Content-Type', 'text/html');
       //  console.log(date.toString());
+      console.log(allChild);
       res.render("table.ejs", { Child: allChild });
     }
   });
 });
-
 
 
 

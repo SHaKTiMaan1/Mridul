@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 const CwcEmployee = require('../models/cwcEmployee');
 
 const Cci = require('../models/cci2.js');
+const CciEmployee = require('../models/cciEmployee.js');
+const { getMaxListeners } = require('../models/cci2.js');
 
 
 
@@ -108,12 +110,62 @@ router.post("/login/cwcEmployee", async (req, res) => {
 
   console.log("isPasswordValid : " + isPasswordValid);
   if (isPasswordValid) {
-    res.render("cwclanding.ejs", { cwcOfficial: employee });
+    res.render("cwcHome.ejs", { cwcOfficial: employee });
   } else {
     res.send("Wrong Password !!");
   }
 });
 
+
+
+
+
+// For just testing and creatin cciEmploye for kirti
+
+router.post("/cciEmployeeTest", async (req, res) => {
+
+ 
+
+  // //CHECKING IF USER ALREADY EXISTS
+  // const emailExists = await CwcEmployee.findOne({ email: req.body.email });
+  // if (emailExists) return res.status(400).send('Email Already Exists');
+
+  // console.log("Email doesn't already exist");
+
+  //HASHING THE PASSWORD
+  const salt = await bcrypt.genSalt(10);
+  const testpass = "kirti"; //Password for CciEmployee
+  const hashedPassword = await bcrypt.hash(testpass , salt);
+
+  console.log("Password hashed " + hashedPassword);
+
+  //CREATING A NEW Cci EMPLOYEE
+  const employee = new CciEmployee({
+   cci_id:"GhaM1",
+   fname: "mridul",
+   lname:"sharma",
+   district: "Ghaziabad", 
+   state: "U.P",
+   contactNumber: 7876767867,
+   email: "mridul0sharma@gmail.com",
+    password: hashedPassword
+  });
+
+
+  console.log("Employee Created " + employee);
+
+  try {
+    const savedEmployee = await employee.save();
+
+    console.log("Employee saved " + savedEmployee);
+
+    res.send("Registered");
+   
+  } catch (err) {
+    console.log("We got some error");
+    res.send("There was error" + err);
+  }
+});
 
 
 
