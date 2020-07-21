@@ -21,7 +21,7 @@ var ChildSchema = new mongoose.Schema({
         } 
     },
 
-    reg_date    : {type : Date},//date when found and registered for first time.
+    reg_date    : String,//date when found and registered for first time.
     gender      : String,
     witness     : String// CWC Official Witness ID
 });

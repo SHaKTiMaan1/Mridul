@@ -18,7 +18,31 @@ var CciSchema = new mongoose.Schema({
     contact_Info: {
       contact_no :String,
       email: String
+    },
+    attendance:[
+      {
+        date : {
+            type : String
+        },
+        data:[{
+            C_Id : {
+                type : String
+            },
+            firstName  : {
+                type        : String,
+            },
+            middleName : {
+                type        : String
+            },
+            lastName   : {
+                type        : String
+            },
+            present : {
+                type : Boolean
+            }
+        }]
     }
+    ]
 
     
 });
