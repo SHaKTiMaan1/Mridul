@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Details</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+  <!-- <link  href="../assets/css/child.css" rel="stylesheet"/> -->
+  <!-- <link  href="../assets/css/attendance.css" rel="stylesheet" /> -->
+  <style>
+    #content-area{
+    margin-left: 250px;
+    padding-top: 60px;
+    background-image: linear-gradient(125deg,#2c3e50,#27ae50,#27ae60,#2980b9,#e74c3c,#8e44ad);
+    background-size: 400%;
+    animation: bganimation 20s infinite;
+    height: 100vh;
+
+}
+.main{
+    padding: 15px;
+}
+.main .heading h1{
+    color: purple;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+    text-align: center;
+    border-bottom: 5px solid #282639;
+}
+.pos{
+    float: left;
+}
+.pos1{
+    float: right;
+    padding-top: 0;
+}
+
+.btn{
+    float: right;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.date{
+    font-size: 1.1rem;
+    font-weight: 200;
+    color: purple;
+
+}
+.date2{
+    color: #282639;
+    border-radius: 6px;
+    padding: 1px 10px;
+}
+.backbt{
+	display: block;
+	width: 100%;
+	height: 30px;
+	border-radius: 25px;
+	outline: none;
+	border: none;
+	background-image: linear-gradient(to right,#282639,#382043,#F4F6F9);
+	background-size: 200%;
+	font-size: 1.1rem;
+	color: #fff;
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+    margin-top: 10px;
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+	cursor: pointer;
+    transition: .5s;
+    text-decoration: none;
+}
+.backbt:hover{
+    background-position: right;
+    text-decoration: none;
+    color: black;
+	
+}
+/*table code*/
+table{
+    width: 100%;
+    margin-top: 30px;
+
+}
+table thead{
+   background: #282639;
+   border-top-left-radius: 5px;
+   border-top-right-radius: 5px;
+   -moz-border-radius-topleft: 5px;
+   -moz-border-radius-topright: 5px;
+   border-top-left-radius: 5px;
+   border-top-right-radius: 5px;
+}
+table thead th{
+    font-size: 1rem;
+    padding: 10px 10px;
+    text-transform: uppercase;
+    font-weight: 200px;
+    color: #D3D3D3;
+    text-align: left;
+   
+}
+tbody{
+   background: #fff;
+    font-size: 1rem;
+
+}
+td{
+    padding: 15px 10px;
+    text-align: left;
+    color: #282639;
+}
+.id{
+    color: orangered;
+}
+.absent{
+    color: rgb(173, 8, 8);
+}
+.present{
+    color: rgb(17, 17, 138);
+}
+@keyframes bganimation{
+    0%{
+        background-position: 0% 50%;
+    }
+    50%{
+        background-position: 100% 50%;
+    }
+    100%{
+        background-position: 0% 50%;
+    }
+}
+
+*{
+    box-sizing: border-box;
+}
+body{
+    font-family: 'Poppins', sans-serif;
+    background: #F4F6F9;
+}
+
+ #sideMenu{
+    
+    background: #382043 !important;
+    position:fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    z-index: 99999;
+    transition: all .3s ease;
+}
+
+nav{
+    padding-top: 80px;
+    background: #382043;
+    
+    
+}
+a.active{
+    display: block;
+    color: #D3D3D3;
+    text-decoration: none;
+    padding: 15px 10px;
+    font-weight: 300;
+    transition: all .3s ease-in-out;
+    
+}
+
+
+.fa{
+    color: #D3D3D3;
+    font-size: 1.4rem;
+    margin-right: .8rem;
+    display: inline-block;
+    width: 20px;
+    position: relative;
+    top: 2px;
+    
+}
+
+a.active:hover{
+    background: #282639;
+    color: #39ff14;
+    text-decoration: none;
+    border-left: 5px solid  #39ff14;
+    
+}
+a.active:hover i{
+    color: #39ff14;
+}
+.current{
+    background: #282639 !important;
+    color: #39ff14 !important;
+    border-left: 2px solid  #39ff14;
+    
+}
+.current2{
+    background: #282639 !important;
+    color: #39ff14 !important;
+}
+
+
+/* header code*/
+header{
+    
+    padding-right: 10px;
+    background: #282639;
+    height: 50px;
+    width: 100%;
+    z-index: 99999;
+    position: fixed;
+
+
+}
+.logo{
+    float: left;
+    padding-top: 10px;
+    padding-left: 60px;
+    font-size: 24px;
+    color: #D3D3D3;
+}
+.user-field{
+    
+    float: right;
+    
+
+
+}
+.user-field a .fa{
+    display: inline-block;
+    margin-right: 10px;
+    text-decoration: none;
+    padding-top: 10px;
+    padding-right: 20px;
+    border: none !important;
+}
+.user-field a .fa:hover{
+    text-decoration: none;
+    color: #39ff14;
+    border: none !important;
+}
+.fa-caret-down{
+    font-size: .9em;
+    position: relative;
+    top: 0;
+}
+.fa-caret-down:hover{
+    color: #39ff14;
+}
+
+  </style>
+</head>
+
+<body>
+
+
+  <section id="sideMenu">
+
+    <nav>
+      <a class="active" href="#"><i class="  fa fa-building" aria-hidden="true"></i>CWC HOME</a>
+      <a class="active  " href="/addChild/<%= district%>/<%=cwcOfficialName%>"><i class=" fa fa-id-badge"
+          aria-hidden="true"></i>Child Registration</a>
+      <a class="active" href="/addCci/<%= district%>/<%=cwcOfficialName%>"><i class="fa fa-building"
+          aria-hidden="true"></i>CCI Registration</a>
+      <a class="active" href="#"><i class="fa fa-id-badge" aria-hidden="true"></i>Employee Registration</a>
+      <a class="active" href="/recommendation/<%= district%>/<%=cwcOfficialName%>"><i class="fa fa-list-alt"
+          aria-hidden="true"></i>Eligibility Pool</a>
+      <a class="active current" href="/cciInfo/<%= district%>/<%=cwcOfficialName%>"><i class="current2 fa fa-info" aria-hidden="true"></i> CCI Details</a>
+    </nav>
+  </section>
+  <header>
+    <div class="logo">CARE</div>
+    <div class="user-field">
+
+      <a href="#">
+        <i class="fa fa-user-circle" aria-hidden="true"></i>
+        <i class="fa fa-caret-down" aria-hidden="true"></i>
+      </a>
+
+    </div>
+
+
+  </header>
+  <section id="content-area">
+    <div class="main">
+
+      <div class="heading">
+        <h1><%=cci_name%></h1>
+      </div>
+      <div class="row">
+        <div class="col-md-6 pos">
+          <label for="" class="date">Enter date for attendance</label>
+          <input type="date" id="date" name="current_date" class="date2" placeholder="dd-mm-yyyy">
+          <button class="btn btn-primary btn-block" id="dateBtn" type="e">Show</button>
+        </div>
+        <div class="col-md-6 pos1">
+          <div class="btn"><a class="backbt" onclick="history.go(-1)">BACK</a></div>
+          <div class="btn"><a class="backbt" href="#">Check In-Out Movement</a></div>
+        </div>
+
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>
+              CHILD ID
+            </th>
+            <th>
+              NAME
+            </th>
+            <th>
+              LAST GUARDIAN VISIT
+            </th>
+            <th>
+              AGE
+            </th>
+            <th>
+              ATTENDANCE
+            </th>
+          </tr>
+        </thead>
+        <tbody id="tableRow">
+          <% child.forEach(function(child){ %>
+          <% console.log(child.firstName) %>
+
+          <tr>
+            <td class="id"><%=child.C_Id%></td>
+            <td><%=child.firstName%></td>
+            <%let value = ""%>
+            <% if(child.present == true) {value ="PRESENT"} %>
+            <% if(child.present != true){ value = "ABSENT"}  %>
+            <td> - </td>
+            <td>10</td>
+            <td class="present"><%=value%></td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+
+
+    </div>
+  </section>
+
+
+
+  
+
+
+  <script>
+
+    console.log("working");
+    test = document.getElementById("date").value;
+    // console.log(test);
+    var yyyy = "";
+    var mm = "";
+    var dd = "";
+    document.getElementById("date").addEventListener('change', function () {
+      changeDate = this.value;
+
+
+      yyyy = changeDate.substring(0, 4);
+      mm = changeDate.substring(5, 7);
+      dd = changeDate.substring(8, 10);
+      console.log(yyyy);
+      console.log(mm);
+      console.log(dd);
+      changeDate = dd + '-' + mm + '-' + yyyy;
+      console.log(changeDate);
+    })
+
+    let dateBtn = document.getElementById('dateBtn');
+    dateBtn.addEventListener('click', buttonHandler);
+
+    function buttonHandler() {
+      console.log("You have clicked");
+
+      const xhr = new XMLHttpRequest();
+
+
+      // xhr.open('GET', 'mridul.txt', true);
+      // xhr.open('GET', 'https://jsonplaceholder.typicode.com/todos/1', true);
+      xhr.open('GET', `http://localhost:3000/getDetails/<%=cci_id%>/find/${changeDate}`, true);
+
+
+      xhr.onload = function () {
+        if (this.status === 200) {
+          console.log(this.responseText);
+          
+          
+            let obj = JSON.parse(this.responseText);
+            console.log(obj[0]);
+
+            let tableRow = document.getElementById('tableRow');
+            str = "";
+
+            // for( i=0; i<20; i++)
+            // {
+            //   str+=`<li>  ${obj.data[i].id}
+            //   ${obj.data[i].employee_name}
+            //     </li>`;
+
+            // }
+            // list.innerHTML = str;
+            tableRow.innerHTML = str;
+            for (var i = 0; i < obj.length; i++) {
+              var bacha = obj[i];
+              console.log(bacha.firstName);
+              var value = "";
+              if (bacha.present == true) {
+                value = "PRESENT";
+              }
+              else {
+                value = "ABSENT"
+              }
+              str += `
+      <tr>
+      <th scope="row">${bacha.C_Id}</th>
+            <td>${bacha.firstName}</td>
+           <td> - </td>
+           <td>10</td>
+            <td>${value}</td>
+      </tr>
+            `
+            }
+
+            tableRow.innerHTML = str;
+         
+
+        }
+        else {
+          console.log("No attendance for this date.");
+          let tableRow = document.getElementById('tableRow');
+            str="";
+            str = `<h2>No attendance for this Date.</h2>`;
+            tableRow.innerHTML = str ;
+                  }
+      }
+
+      xhr.send();
+
+    }
+
+
+
+  </script>
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+    crossorigin="anonymous"></script>
+
+   
+</body>
+
+
+
+</html>
