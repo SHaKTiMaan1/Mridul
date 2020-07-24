@@ -22,7 +22,7 @@
   <section id="sideMenu">
 
     <nav>
-      <a class="active" href="#"><i class="  fa fa-building" aria-hidden="true"></i>CWC HOME</a>
+      <a class="active" href="/cwcHome/<%= district%>/<%=cwcOfficialName%>"><i class="  fa fa-building" aria-hidden="true"></i>CWC HOME</a>
       <a class="active  " href="/addChild/<%= district%>/<%=cwcOfficialName%>"><i class=" fa fa-id-badge"
           aria-hidden="true"></i>Child Registration</a>
       <a class="active" href="/addCci/<%= district%>/<%=cwcOfficialName%>"><i class="fa fa-building"
@@ -101,7 +101,7 @@
                 <span class="value">TBD</span>
               </div>
             </div>
-            <div class="btn"><a class="backbt" href="/newAttendance/<%=cci.cci_id%>/<%=cci.cci_name%>">Attendance List</a>
+            <div class="btn"><a class="backbt" href="/newAttendance/<%= district%>/<%=cwcOfficialName%>/<%=cci.cci_id%>/<%=cci.cci_name%>">Attendance List</a>
             </div>
           </div>
         </div>
