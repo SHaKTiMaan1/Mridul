@@ -6,10 +6,8 @@ var express = require("express"),
   Cci = require("../models/cci2.js");
 
 
-router.get("/cwcBack", function (req, res) {
-  res.redirect(req.get('referer'));
-});
 
+//this is post request of the Child Registration Form
 router.post('/addChild', function (req, res) {
 
   var C_Id = (req.body.fname + req.body.gender);
@@ -68,7 +66,7 @@ router.post('/addChild', function (req, res) {
 
         
     }
-  // This code increment the strength field by 1.
+  // This code increment the strength field of the Cci in which child is registered by 1 .
     Cci.findOneAndUpdate({cci_name: req.body.cci_name},{$inc:{strength: 1}},{new: true}, function(err, result){
       if(err){
         console.log(err);
@@ -85,6 +83,8 @@ router.post('/addChild', function (req, res) {
  
 });
 
+
+//This Get request for Child Registration form.
 router.get('/addChild/:district/:cwcOfficialName', function (req, res) {
 
   Cci.find({"cci_address.district": req.params.district}, function (err, allCci) {
@@ -105,7 +105,7 @@ router.get('/new', function (req, res) {
   res.render("table.ejs");
 });
 
-
+//Get request for sucess page when child gets registered
 //  this is (**)
 router.get('/registered/:id/:name', function (req, res) {
   res.render("success.ejs", {
@@ -118,14 +118,15 @@ router.get('/registered/:id/:name', function (req, res) {
 
 
 
-
-//Eligibility Pool route
+//NOT WORKING NEED CHANGES...B.COZ OF DATEFORMAT CHANGED TO STRING.
+//Eligibility Pool route/
+//This need a change in code as Date format is changed.
 
 router.get('/details', function (req, res) {
   // var date=  new Date( parseInt((new Date().getTime - 172800000),10));
   //in below,   logic is to get those values which are older than three months, $lt --> less than.
   //new Date().getTime() --> this gives the time elapsed in ms from a date (a specific date of mongoDB ) and 17280000000000 is 3 months in milliseconds. then this difference is converted into  date format by new Date(____).
-  Child.find({ reg_date: { $lt: new Date(new Date().getTime() - 17280000000) } }, function (err, allChild) {
+  Child.find({ reg_date: { $lt: new Date(new Date().getTime() - 7889400000) } }, function (err, allChild) {
     if (err) {
       console.log(err);
     } else {
